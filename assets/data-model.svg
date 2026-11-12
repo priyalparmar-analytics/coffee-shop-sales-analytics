@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="620" viewBox="0 0 1120 620" role="img" aria-labelledby="t d" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif">
+  <title id="t">Data model</title>
+  <desc id="d">The report runs on a single flat fact table of 149,116 rows with thirteen columns, two of them derived in Excel, plus four calculated columns and four DAX measures added in Power BI. A price band reference table feeds the price tier column.</desc>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#83817c"/>
+    </marker>
+  </defs>
+
+  <rect width="1120" height="620" rx="12" fill="#fcfcfb"/>
+  <rect x="0.5" y="0.5" width="1119" height="619" rx="12" fill="none" stroke="#dcd9d3"/>
+
+  <text x="40" y="46" font-size="20" font-weight="600" fill="#0b0b0b">Data model</text>
+  <text x="40" y="70" font-size="13" fill="#52514e">A single flat fact table — the dataset ships pre-joined, so there is no dimension layer to relate</text>
+
+  <!-- fact table -->
+  <rect x="40" y="96" width="420" height="492" rx="10" fill="#fcfcfb" stroke="#2a78d6" stroke-width="1.5"/>
+  <rect x="40" y="96" width="420" height="52" rx="10" fill="#EEF4FD"/>
+  <rect x="40" y="138" width="420" height="10" fill="#EEF4FD"/>
+  <text x="60" y="124" font-size="15" font-weight="700" fill="#0b0b0b">Raw Data</text>
+  <text x="440" y="124" font-size="11.5" fill="#1F5FB0" text-anchor="end">149,116 rows · grain: transaction line</text>
+
+  <g font-size="12.5" fill="#0b0b0b">
+    <text x="60" y="178">transaction_id</text>      <text x="440" y="178" fill="#83817c" text-anchor="end" font-size="11">integer · key</text>
+    <text x="60" y="206">transaction_date</text>    <text x="440" y="206" fill="#83817c" text-anchor="end" font-size="11">date</text>
+    <text x="60" y="234">transaction_time</text>    <text x="440" y="234" fill="#83817c" text-anchor="end" font-size="11">time</text>
+    <text x="60" y="262">transaction_qty</text>     <text x="440" y="262" fill="#83817c" text-anchor="end" font-size="11">integer</text>
+    <text x="60" y="290">store_id</text>            <text x="440" y="290" fill="#83817c" text-anchor="end" font-size="11">integer</text>
+    <text x="60" y="318">store_location</text>      <text x="440" y="318" fill="#83817c" text-anchor="end" font-size="11">text · 3 values</text>
+    <text x="60" y="346">product_id</text>          <text x="440" y="346" fill="#83817c" text-anchor="end" font-size="11">integer · 80 values</text>
+    <text x="60" y="374">unit_price</text>          <text x="440" y="374" fill="#83817c" text-anchor="end" font-size="11">decimal</text>
+    <text x="60" y="402" font-weight="600" fill="#1D7044">revenue</text>
+    <text x="440" y="402" fill="#1D7044" text-anchor="end" font-size="11">derived · qty × unit_price</text>
+    <text x="60" y="430">product_category</text>    <text x="440" y="430" fill="#83817c" text-anchor="end" font-size="11">text · 9 values</text>
+    <text x="60" y="458">product_type</text>        <text x="440" y="458" fill="#83817c" text-anchor="end" font-size="11">text · 29 values</text>
+    <text x="60" y="486">product_detail</text>      <text x="440" y="486" fill="#83817c" text-anchor="end" font-size="11">text · 80 values</text>
+    <text x="60" y="514" font-weight="600" fill="#1D7044">price_tier</text>
+    <text x="440" y="514" fill="#1D7044" text-anchor="end" font-size="11">derived · XLOOKUP</text>
+  </g>
+  <line x1="60" y1="534" x2="440" y2="534" stroke="#e6e4df"/>
+  <text x="60" y="556" font-size="11" fill="#83817c">Green fields are calculated in Excel and stored on the row before import.</text>
+  <text x="60" y="574" font-size="11" fill="#83817c">Nothing is joined at query time.</text>
+
+  <!-- lookup -->
+  <rect x="520" y="96" width="268" height="180" rx="10" fill="#fcfcfb" stroke="#CFE4D8" stroke-width="1.5"/>
+  <rect x="520" y="96" width="268" height="44" rx="10" fill="#F1F7F3"/>
+  <rect x="520" y="130" width="268" height="10" fill="#F1F7F3"/>
+  <text x="540" y="124" font-size="14" font-weight="700" fill="#0b0b0b">Lookup Table</text>
+  <g font-size="12.5" fill="#0b0b0b">
+    <text x="540" y="168">product_id</text>
+    <text x="540" y="194">unit_price</text>
+    <text x="540" y="220">product_type</text>
+    <text x="540" y="246" font-weight="600" fill="#1D7044">price_tier</text>
+  </g>
+  <text x="540" y="268" font-size="10.5" fill="#83817c">98 rows · 80 unique ids · Excel-side lookup</text>
+  <path d="M 520 200 L 480 200 L 480 514 L 462 514" fill="none" stroke="#83817c" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#a)"/>
+
+  <!-- calculated columns -->
+  <rect x="520" y="296" width="268" height="148" rx="10" fill="#FBF4E6" stroke="#EDDCBC"/>
+  <text x="540" y="322" font-size="11" font-weight="700" fill="#B07A10" letter-spacing="1.2">CALCULATED COLUMNS · DAX</text>
+  <g font-size="12.5" fill="#0b0b0b">
+    <text x="540" y="350">Month Start</text>      <text x="768" y="350" font-size="10.5" fill="#83817c" text-anchor="end">trend axis</text>
+    <text x="540" y="376">Month_Year</text>       <text x="768" y="376" font-size="10.5" fill="#83817c" text-anchor="end">slicer key</text>
+    <text x="540" y="402">Hour of Day</text>      <text x="768" y="402" font-size="10.5" fill="#83817c" text-anchor="end">heat matrix rows</text>
+    <text x="540" y="428">Day Name</text>         <text x="768" y="428" font-size="10.5" fill="#83817c" text-anchor="end">heat matrix columns</text>
+  </g>
+
+  <!-- measures -->
+  <rect x="520" y="464" width="268" height="148" rx="10" fill="#FBF4E6" stroke="#EDDCBC"/>
+  <text x="540" y="490" font-size="11" font-weight="700" fill="#B07A10" letter-spacing="1.2">MEASURES · DAX</text>
+  <g font-size="12.5" fill="#0b0b0b">
+    <text x="540" y="518">Total Revenue</text>
+    <text x="540" y="542">Total Transactions</text>
+    <text x="540" y="566">Avg Order Value</text>
+    <text x="540" y="590">Best Month</text>
+  </g>
+
+  <!-- consumers -->
+  <rect x="820" y="96" width="260" height="226" rx="10" fill="#EEF4FD" stroke="#CFE0F7"/>
+  <text x="840" y="122" font-size="11" font-weight="700" fill="#1F5FB0" letter-spacing="1.2">PAGE 1 · SALES ANALYSIS</text>
+  <g font-size="12" fill="#52514e">
+    <text x="840" y="150">KPI cards — revenue, transactions,</text>
+    <text x="840" y="168">average order value, best month</text>
+    <text x="840" y="194">Line — monthly revenue + Q3 forecast</text>
+    <text x="840" y="220">Bar — revenue by store location</text>
+    <text x="840" y="246">Insight panel — growth, best month,</text>
+    <text x="840" y="264">top performing store</text>
+    <text x="840" y="296" font-size="11" fill="#83817c">no slicers: this page is the summary view</text>
+  </g>
+
+  <rect x="820" y="340" width="260" height="248" rx="10" fill="#EEF4FD" stroke="#CFE0F7"/>
+  <text x="840" y="366" font-size="11" font-weight="700" fill="#1F5FB0" letter-spacing="1.2">PAGE 2 · DEEP DIVE ANALYSIS</text>
+  <g font-size="12" fill="#52514e">
+    <text x="840" y="394">Slicers — Month_Year, store_location</text>
+    <text x="840" y="420">Bar — revenue by product type</text>
+    <text x="840" y="446">Column — revenue by price tier</text>
+    <text x="840" y="472">Donut — revenue by category</text>
+    <text x="840" y="498">Matrix — transactions by hour</text>
+    <text x="840" y="516">of day × day of week</text>
+    <text x="840" y="542" font-size="11" fill="#83817c">uses the Table Heatmap custom visual</text>
+    <text x="840" y="566" font-size="11" fill="#83817c">slicers cross-filter every visual on the page</text>
+  </g>
+
+  <line x1="790" y1="200" x2="816" y2="200" stroke="#83817c" stroke-width="1.5" marker-end="url(#a)"/>
+  <line x1="790" y1="464" x2="816" y2="464" stroke="#83817c" stroke-width="1.5" marker-end="url(#a)"/>
+</svg>
